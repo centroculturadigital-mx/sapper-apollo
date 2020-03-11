@@ -4,6 +4,7 @@ const NODOS_TODOS = gql`
     {
         allNodos {
             nombre
+            
         }
     }
 `;

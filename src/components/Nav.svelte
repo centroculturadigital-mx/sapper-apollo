@@ -1,5 +1,33 @@
 <script>
+  import { getClient, mutate } from 'svelte-apollo'
+
+  import { goto } from '@sapper/app';
+
+  import EGRESA from '../data/gql/EGRESA'
+
   export let segment;
+  
+  const client = getClient()
+
+  console.log(client)
+
+  const logout = async () => {
+    try {
+
+        const res = await mutate(client, {
+            mutation: EGRESA
+        });
+        console.log(res)
+        console.log(res.data)
+        client.resetStore()
+        document.cookie = "keystone.sid=; Max-Age=-999999";
+        goto('/ingreso')
+
+    } catch(error) {
+        console.log(error)
+    }
+    
+  }
 </script>
 
 <style>
@@ -64,6 +92,9 @@
       >
         albums
       </a>
+    </li>
+    <li>
+      <button on:click={logout}>Salir</button>
     </li>
   </ul>
 </nav>

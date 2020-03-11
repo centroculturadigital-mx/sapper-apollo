@@ -1,11 +1,12 @@
 <script>
     import { query, getClient } from "svelte-apollo";
+    import { goto } from '@sapper/app';
     import NODOS_TODOS from '../../data/gql/NODOS_TODOS'
+
+    import Redirect from '../Redirect.svelte'
 
     const client = getClient()
     const nodos = query(client, { query: NODOS_TODOS });
-
-    console.log(nodos)
     // your script goes here
 </script>
 
@@ -16,7 +17,7 @@
 <h1>Nodos</h1>
 
 {#await $nodos}
-<p>Loading...</p>
+  <p>Loading...</p>
 {:then result}
 
 <ul>
@@ -29,5 +30,7 @@
 </ul>
 
 {:catch error}
-<p>Error: {error}</p>
+
+  <Redirect route="/ingreso"/>
+
 {/await}

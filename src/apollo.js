@@ -1,20 +1,19 @@
-import ApolloClient from 'apollo-boost';
+import ApolloClient from 'apollo-client';
 import fetch from 'node-fetch';
+import { createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import { getToken } from "./manage-jwt";
-// TODO: Put in .env file
 const GQL_SERVER_ENDPOINT = 'http://localhost:3000/admin/api'
 
+const link = createHttpLink({
+    uri: GQL_SERVER_ENDPOINT,
+    fetch,
+    credentials: 'include'
+});
+
+// TODO: Put in .env file
+
 export default new ApolloClient({ 
-    uri: GQL_SERVER_ENDPOINT, fetch,
-    request: operation => {
-        const token = getToken();
-        if (token) {
-            operation.setContext({
-                headers: {
-                    "x-access-token": token,
-                }
-            });
-        }
-    }
+    link,
+    cache: new InMemoryCache(),
 });

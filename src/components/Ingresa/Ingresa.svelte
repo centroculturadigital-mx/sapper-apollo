@@ -2,7 +2,6 @@
     import { getClient, mutate } from 'svelte-apollo'
 
     import INGRESA from '../../data/gql/INGRESA'
-    import { saveToken } from '../../manage-jwt'
 
 
     const client = getClient()
@@ -23,7 +22,7 @@
             console.log(res.data)
             console.log(res.data.authenticateUserWithPassword)
 
-            saveToken(res.data.authenticateUserWithPassword.token)
+            document.cookie=`keystone.sid=${res.data.authenticateUserWithPassword.token}`
 
         } catch(error) {
             console.log(error)
